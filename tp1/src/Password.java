@@ -1,9 +1,11 @@
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Password {
     /**
@@ -64,23 +66,23 @@ public class Password {
      */
     public static boolean isStrongPassword(String password) {
 
-        if (password.length() < 12){
-            return false;
-            }
-
-        if (!password.chars().anyMatch(c -> Character.isUpperCase(c))){
+        if (password.length() < 12) {
             return false;
         }
 
-        if (!password.chars().anyMatch(c -> Character.isDigit(c))){
-            return false;
-        } 
-
-        if (!password.chars().anyMatch(c -> !Character.isLowerCase(c))){
+        if (!password.chars().anyMatch(c -> Character.isUpperCase(c))) {
             return false;
         }
 
-        if (password.chars().anyMatch(c -> Character.isWhitespace(c))){
+        if (!password.chars().anyMatch(c -> Character.isDigit(c))) {
+            return false;
+        }
+
+        if (!password.chars().anyMatch(c -> !Character.isLowerCase(c))) {
+            return false;
+        }
+
+        if (password.chars().anyMatch(c -> Character.isWhitespace(c))) {
             return false;
         }
 
@@ -99,9 +101,14 @@ public class Password {
      */
     public static HashMap<String, Boolean> checkPasswordsList(ArrayList<String> passwords) {
 
-        // Code here
+        HashMap<String, Boolean> checkedPasswords = new HashMap<String, Boolean>();
+        for (int i = 0; i < passwords.size(); i++) {
+            String password = passwords.get(i);
+            Boolean test = isStrongPassword(password);
+            checkedPasswords.put(password, test);
+        }
 
-        return null;
+        return checkedPasswords;
     }
 
     /**
@@ -118,7 +125,36 @@ public class Password {
      */
     public static String generatePassword(int nbCar) {
 
-        // Code here
+        if (nbCar < 4) {
+            return ("Mot de passe trop court");
+        }
+
+        char[] LowerCaseAlphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+                'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+        char[] UpperCaseAlphabet = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+        char[] Digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        char[] SpecialCharacters = "!@#$%^&*()-_=+\\|[]{};:/?.>".toCharArray();
+
+        Random r = new Random();
+        char randomLowerCase = LowerCaseAlphabet[r.nextInt(LowerCaseAlphabet.length)];
+        char randomUpperCase = UpperCaseAlphabet[r.nextInt(UpperCaseAlphabet.length)];
+        char randomDigits = Digits[r.nextInt(Digits.length)];
+        char randomSpecialCharacters = SpecialCharacters[r.nextInt(SpecialCharacters.length)];
+
+        String mdp1 = "" + randomLowerCase + randomUpperCase + randomDigits + randomSpecialCharacters;
+
+        char[][] AllCharacters = { LowerCaseAlphabet, UpperCaseAlphabet, Digits, SpecialCharacters };
+
+        ArrayList<String> mdp = new ArrayList<String>();
+
+        for (int i = 4; i < nbCar; i++) {
+            int NbList = r.nextInt(4);
+            char[] SelectedAlphabet = AllCharacters[NbList];
+            mdp.add(Character.toString(SelectedAlphabet[r.nextInt(SelectedAlphabet.length)]));
+        }
+
+        Collection.shuffle(mdp);
 
         return null;
     }
