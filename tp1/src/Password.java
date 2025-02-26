@@ -39,9 +39,12 @@ public class Password {
      * @return the 6-digit number that matches, or null if no match is found
      */
     public static String bruteForce6Digit(String targetHash) {
-
-        // Code here
-
+        for (int i = 1; i < 1000000; i++){
+            String number = String.format("%06d", i);
+            if ( Password.hashPassword(number).equals(targetHash)) {
+                return number ;
+            }
+        }
         return null;
     }
 
