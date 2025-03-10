@@ -1,6 +1,9 @@
+package fr.ensai.library;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,17 +16,21 @@ public class Library {
     // Attributes
     // -------------------------------------------------------
     private String name;
-    private ArrayList<Book> books;
+    private ArrayList<Item> items;
+    private ArrayList<Loan> activeLoans;
+    private ArrayList<Loan> completedLoans;
 
     /**
      * Constructs a new Library object
      * 
      * @param name  Nom de la library
-     * @param books Liste des livres de la library
+     * @param items Liste des livres de la library
      */
-    public Library(String name, ArrayList<Book> books) {
+    public Library(String name, ArrayList<Item> items, ArrayList<Loan> activeLoans, ArrayList<Loan> completedLoans) {
         this.name = name;
-        this.books = books;
+        this.items = items;
+        this.activeLoans = activeLoans;
+        this.completedLoans = completedLoans;
     }
 
     // -------------------------------------------------------
@@ -33,30 +40,30 @@ public class Library {
     /**
      * No parameter, return void
      */
-    public void displayBooks() {
-        if (books.isEmpty()) {
+    public void displayItems() {
+        if (items.isEmpty()) {
             System.out.println("Il n'y a pas de livres dans la bibliothèque");
         } else {
-            for (Book book : books) {
-                System.out.println(book.toString());
+            for (Item item : items) {
+                System.out.println(item.toString());
             }
         }
     }
 
     /**
-     * Ajoute un livre à books
+     * Ajoute un livre à items
      * A parameter, return void
      * 
-     * @param book increment
+     * @param item increment
      */
-    public void addBook(Book book) {
-        this.books.add(book);
+    public void addItem(Item item) {
+        this.items.add(item);
     }
 
     /**
-     * Loads books from a CSV file and adds them to the library.
+     * Loads items from a CSV file and adds them to the library.
      * 
-     * @param filePath The path to the CSV file containing book data.
+     * @param filePath The path to the CSV file containing item data.
      * @throws IOException If there is an error reading the file, an
      *                     {@link IOException} will be thrown.
      */
@@ -82,13 +89,13 @@ public class Library {
                     // Check if author already exists in the map
                     Author author = authors.get(authorName);
                     if (author == null) {
-                        author = new Author(authorName);
+                        author = new Author(authorName, 0, "Unknown");
                         authors.put(authorName, author);
                         System.out.println(author.toString());
                     }
                     Book book = new Book(isbn, title, author, year, pageCount);
 
-                    this.addIem(book);
+                    this.addItem(book);
                 }
             }
         } catch (
