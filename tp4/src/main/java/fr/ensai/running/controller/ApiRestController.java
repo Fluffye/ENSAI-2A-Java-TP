@@ -3,7 +3,9 @@ package fr.ensai.running.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +26,24 @@ public class ApiRestController {
     public List<Athlete> allAthletes() {
 
         return athleteService.findAll();
+    }
+
+    @GetMapping("/add/{id}")
+    public Athlete getAthleteById(Long id) {
+
+        return athleteService.findById(id);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteAthleteById(Long id) {
+
+        athleteService.deleteById(id);
+    }
+
+    @PutMapping("/save")
+    public Athlete createAthlete(Athlete athlete) {
+
+        return athleteService.save(athlete);
     }
 
 }
